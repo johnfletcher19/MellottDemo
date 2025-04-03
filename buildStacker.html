@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stacker Customizer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #1c1f26;
+            color: white;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .stacker-container, .form-container {
+            background-color: #2c3038;
+            padding: 20px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 45%;
+            height: 650px;
+            position: relative;
+        }
+        .stacker-img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+        }
+        .measurement-line {
+            position: absolute;
+            width: 2px;
+            height: 90%;
+            background-color: red;
+            left: 5%;
+            top: 5%;
+        }
+        .horizontal-line {
+            position: absolute;
+            height: 2px;
+            width: 90%;
+            background-color: red;
+            bottom: 5%;
+            left: 5%;
+        }
+        .measurement-label {
+            position: absolute;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            padding: 2px 5px;
+            font-size: 14px;
+            border-radius: 5px;
+        }
+        .form-container input, .form-container select {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            text-align: center;
+        }
+        .form-container button {
+            background-color: #f9a825;
+            color: black;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 80%;
+        }
+        .carousel {
+            position: relative;
+            width: 100%;
+            max-height: 1400px;
+            overflow: hidden;
+        }
+        .carousel img {
+            width: 100%;
+            max-height: 400px;
+            object-fit: contain;
+            display: none;
+        }
+        .carousel img.active {
+            display: block;
+        }
+        .slider {
+            width: 80%;
+            margin-top: 10px;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            background: blue;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+        label {
+            font-size: 10px;
+        }
+    </style>
+    <script>
+        function updateMeasurements() {
+            document.querySelector('.measurement-label[style*="left: 5px"]')
+                .innerText = "Height: " + document.getElementById("height").value;
+            document.querySelector('.measurement-label[style*="bottom: 5px"]')
+                .innerText = "Length: " + document.getElementById("length").value;
+            document.querySelector('.measurement-label[style*="right: 5px"]')
+                .innerText = "Capacity: " + document.getElementById("capacity").value;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("height").addEventListener("change", updateMeasurements);
+            document.getElementById("length").addEventListener("change", updateMeasurements);
+            document.getElementById("capacity").addEventListener("change", updateMeasurements);
+        });
+    </script>
+</head>
+<body>
+<img src="mellott-logo.png" alt="Mellott Logo" width="200">
+<h1>Stacker Customizer</h1>
+<div class="container">
+    <div class="stacker-container">
+        <div class="carousel">
+            <img src="image001.png" class="active" alt="Stacker Image 1">
+            <img src="image002.png" alt="Stacker Image 2">
+            <img src="image003.png" alt="Stacker Image 3">
+            <img src="image004.png" alt="Stacker Image 4">
+        </div>
+        <input type="range" min="0" max="3" value="0" class="slider" id="imageSlider">
+        <div class="measurement-line"></div>
+        <div class="horizontal-line"></div>
+        <div class="measurement-label" style="left: 5px; top: 50%; transform: translateY(-50%);">Height: 40ft</div>
+        <div class="measurement-label" style="bottom: 5px; left: 50%; transform: translateX(-50%);">Length: 40ft</div>
+        <div class="measurement-label" style="top: 5px; right: 5px;">Capacity: 5ton</div>
+    </div>
+    <div class="form-container">
+        <input type="text" id="name" placeholder="Enter your name">
+        <input type="text" id="company" placeholder="Enter your company">
+        <input type="tel" id="phone" placeholder="Enter your phone number">
+        <input type="email" id="email" placeholder="Enter your email">
+        <label>Height:</label>
+        <select id="height">
+            <option>40ft</option>
+            <option>60ft</option>
+            <option>80ft</option>
+            <option>100ft</option>
+            <option>120ft</option>
+        </select>
+        <label>Length:</label>
+        <select id="length">
+            <option>40ft</option>
+            <option>60ft</option>
+            <option>80ft</option>
+            <option>100ft</option>
+            <option>120ft</option>
+        </select>
+        <label>Capacity:</label>
+        <select id="capacity">
+            <option>5ton</option>
+            <option>10ton</option>
+            <option>15ton</option>
+        </select>
+        <label>Belt Width:</label>
+        <select id="bwidth">
+            <option>3ft</option>
+            <option>5ft</option>
+            <option>7ft</option>
+        </select>
+        <label>Front Strut Type:</label>
+        <select id="strut">
+            <option>Fixed</option>
+            <option>Telescoping</option>
+        </select>
+        <label for="poweredWheels">Power Travel:</label>
+        <input type="checkbox" id="poweredWheels">
+        <div id="priceDisplay" style="margin-top: 10px; font-size: 18px; font-weight: bold;"></div>
+        <script>
+            function calculatePrice() {
+                let basePrice = 100000;
+                let length = parseInt(document.getElementById('length').value);
+                let height = parseInt(document.getElementById('height').value);
+                let capacity = parseInt(document.getElementById('capacity').value);
+                let bwidth = parseInt(document.getElementById('bwidth').value);
+                let poweredWheels = document.getElementById('poweredWheels').checked;
+
+                let lengthIncrease = (length - 40) / 20 * 10000;
+                let heightIncrease = (height - 40) / 20 * 10000;
+                let capacityIncrease = (capacity - 5) / 20 * 10000;
+                let bwidthIncrease = (bwidth -3) /20 * 10000;
+                let poweredWheelsPrice = poweredWheels ? 20000 : 0;
+
+                let totalPrice = basePrice + capacityIncrease + lengthIncrease + heightIncrease + bwidthIncrease + poweredWheelsPrice;
+                document.getElementById('priceDisplay').innerText = "Estimated Price: $" + totalPrice.toLocaleString();
+                return totalPrice;
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                document.getElementById("height").addEventListener("change", calculatePrice);
+                document.getElementById("length").addEventListener("change", calculatePrice);
+                document.getElementById("capacity").addEventListener("change", calculatePrice);
+                document.getElementById("bwidth").addEventListener("change", calculatePrice);
+                document.getElementById("poweredWheels").addEventListener("change", calculatePrice);
+                calculatePrice();
+            });
+
+            function generatePDF() {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                const userName = document.getElementById('name').value;
+                const userCompany = document.getElementById('company').value;
+                const userPhone = document.getElementById('phone').value;
+                const userEmail = document.getElementById('email').value;
+                const height = document.getElementById('height').value;
+                const length = document.getElementById('length').value;
+                const capacity = document.getElementById('capacity').value;
+                const bwidth = document.getElementById('bwidth').value;
+                const strut = document.getElementById('strut').value;
+                const poweredWheels = document.getElementById('poweredWheels').checked ? "Yes" : "No";
+                const price = calculatePrice();
+
+                doc.setFillColor(255, 255, 255);
+                doc.rect(0, 0, 210, 297, 'F');
+                doc.addImage("black.jpg", "JPEG", 10, 10, 50, 20);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(18);
+                doc.text("Custom Stacker Configuration", 105, 40, null, null, "center");
+                doc.setFontSize(12);
+                doc.setFont("helvetica", "normal");
+                doc.text("Name: " + userName, 10, 60);
+                doc.text("Company: " + userCompany, 10, 70);
+                doc.text("Phone: " + userPhone, 10, 80);
+                doc.text("Email: " + userEmail, 10, 90);
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(14);
+                doc.text("Stacker Specifications", 105, 110, null, null, "center");
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(12);
+                doc.text("Height: " + height, 10, 125);
+                doc.text("Length: " + length, 10, 135);
+                doc.text("Capacity: " + capacity, 10, 145);
+                doc.text("Belt Width: " + bwidth, 10, 155);
+                doc.text("Front Strut Type: " + strut, 10, 165)
+                doc.text("Powered Wheels: " + poweredWheels, 10, 175);
+                doc.text("Estimated Price: $" + price.toLocaleString(), 10, 185);
+                doc.addImage("stacker.jpg", "JPEG", 35, 190, 140, 70);
+                doc.setFontSize(10);
+                doc.setTextColor(100);
+                doc.text("Your custom stacker request has been submitted.", 105, 250, null, null, "center");
+                doc.text("Contact: 855-554-1606", 10, 270);
+                doc.text("Email: sales@mellott.com", 10, 280);
+                doc.save("Stacker_Customization.pdf");
+            }
+            document.getElementById("imageSlider").addEventListener("input", function() {
+                let index = this.value;
+                let images = document.querySelectorAll(".carousel img");
+                images.forEach((img, i) => {
+                    img.classList.remove("active");
+                    if (i == index) {
+                        img.classList.add("active");
+                    }
+                });
+            });
+        </script>
+        <button onclick="generatePDF()">Submit</button>
+    </div>
+</div>
+</body>
+</html>
